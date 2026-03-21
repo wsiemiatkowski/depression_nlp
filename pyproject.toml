@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.11"
 dependencies = [
+    "datasets>=4.8.3",
     "joblib>=1.5.3",
+    "kaggle>=2.0.0",
     "matplotlib>=3.10.8",
     "pandas>=3.0.1",
     "scikit-learn>=1.8.0",
