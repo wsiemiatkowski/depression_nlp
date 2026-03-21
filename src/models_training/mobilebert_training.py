@@ -1,8 +1,8 @@
 import torch
 
 from transformers import (
-    AlbertForSequenceClassification,
-    AlbertTokenizer,
+    MobileBertForSequenceClassification,
+    MobileBertTokenizer,
     Trainer,
     TrainingArguments,
 )
@@ -14,17 +14,17 @@ from src.utils.training_utils import (
     tokenize_dataset,
 )
 
-MODEL_NAME = "albert-base-v2"
-MODEL_DIR = "fine_tuned_models/albert"
-METRICS_DIR = "data/03_metrics/albert"
+MODEL_NAME = "google/mobilebert-uncased"
+MODEL_DIR = "fine_tuned_models/mobilebert"
+METRICS_DIR = "data/03_metrics/mobilebert"
 
 
 X_train, X_test, y_train, y_test, label_encoder = load_and_prepare_data(
     label_encoder_path=f"{MODEL_DIR}/label_encoder.pkl",
 )
 
-tokenizer = AlbertTokenizer.from_pretrained(MODEL_NAME)
-model = AlbertForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
+tokenizer = MobileBertTokenizer.from_pretrained(MODEL_NAME)
+model = MobileBertForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
 
 train_dataset = tokenize_dataset(tokenizer, X_train, y_train)
 test_dataset = tokenize_dataset(tokenizer, X_test, y_test)
@@ -43,7 +43,6 @@ training_args = TrainingArguments(
     load_best_model_at_end=True,
 )
 
-
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -53,8 +52,8 @@ trainer = Trainer(
 
 trainer.train()
 
-model.save_pretrained(f"{MODEL_DIR}/fine_tuned_albert")
-tokenizer.save_pretrained(f"{MODEL_DIR}/fine_tuned_albert")
+model.save_pretrained(f"{MODEL_DIR}/fine_tuned_mobilebert")
+tokenizer.save_pretrained(f"{MODEL_DIR}/fine_tuned_mobilebert")
 
 device = get_device()
 model.eval()

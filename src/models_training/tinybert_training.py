@@ -1,8 +1,8 @@
 import torch
 
 from transformers import (
-    AlbertForSequenceClassification,
-    AlbertTokenizer,
+    BertForSequenceClassification,
+    BertTokenizer,
     Trainer,
     TrainingArguments,
 )
@@ -14,17 +14,17 @@ from src.utils.training_utils import (
     tokenize_dataset,
 )
 
-MODEL_NAME = "albert-base-v2"
-MODEL_DIR = "fine_tuned_models/albert"
-METRICS_DIR = "data/03_metrics/albert"
+MODEL_NAME = "huawei-noah/TinyBERT_General_4L_312D"
+MODEL_DIR = "fine_tuned_models/tinybert"
+METRICS_DIR = "data/03_metrics/tinybert"
 
 
 X_train, X_test, y_train, y_test, label_encoder = load_and_prepare_data(
     label_encoder_path=f"{MODEL_DIR}/label_encoder.pkl",
 )
 
-tokenizer = AlbertTokenizer.from_pretrained(MODEL_NAME)
-model = AlbertForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
+tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
+model = BertForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
 
 train_dataset = tokenize_dataset(tokenizer, X_train, y_train)
 test_dataset = tokenize_dataset(tokenizer, X_test, y_test)
@@ -32,18 +32,16 @@ test_dataset = tokenize_dataset(tokenizer, X_test, y_test)
 training_args = TrainingArguments(
     output_dir=f"{MODEL_DIR}/results",
     eval_strategy="epoch",
-    learning_rate=2e-5,
+    learning_rate=3e-5,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
-    num_train_epochs=3,
+    num_train_epochs=4,
     weight_decay=0.01,
     logging_dir="./logs",
     logging_steps=10,
     save_strategy="epoch",
     load_best_model_at_end=True,
 )
-
-
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -53,8 +51,8 @@ trainer = Trainer(
 
 trainer.train()
 
-model.save_pretrained(f"{MODEL_DIR}/fine_tuned_albert")
-tokenizer.save_pretrained(f"{MODEL_DIR}/fine_tuned_albert")
+model.save_pretrained(f"{MODEL_DIR}/fine_tuned_tinybert")
+tokenizer.save_pretrained(f"{MODEL_DIR}/fine_tuned_tinybert")
 
 device = get_device()
 model.eval()

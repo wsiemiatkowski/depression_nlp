@@ -14,8 +14,8 @@ print(f"Null classes:\n{null_classes}")
 print(f"Null text:\n{null_text}")
 
 # Create sub dataset with 6000 examples
-suicide = df[df["class"] == "suicide"].sample(n=3000, random_state=42)
-non_suicide = df[df["class"] == "non-suicide"].sample(n=3000, random_state=42)
+suicide = df[df["class"] == "suicide"].sample(n=7500, random_state=42)
+non_suicide = df[df["class"] == "non-suicide"].sample(n=7500, random_state=42)
 
 df_sample = (
     pd.concat([suicide, non_suicide])
