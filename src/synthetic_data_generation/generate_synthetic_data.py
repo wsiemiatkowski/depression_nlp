@@ -2,9 +2,10 @@ import dspy
 import random
 
 import pandas as pd
+from tqdm import tqdm
 
 generator = dspy.LM(
-    "ollama_chat/qwen3.5:27b",
+    "ollama_chat/gemma3:27b",
     api_base="http://localhost:11434",
     temperature=0.9,
     max_tokens=200,
@@ -27,7 +28,7 @@ class SyntheticSuicidalPost(dspy.Signature):
 
 class DataGenerator(dspy.Module):
     def __init__(self):
-        self.generate = dspy.ChainOfThought(SyntheticSuicidalPost)
+        self.generate = dspy.Predict(SyntheticSuicidalPost)
 
     def forward(self, label: str, variation_hint: str):  # add variation_hint here
         return self.generate(label=label, variation_hint=variation_hint)
@@ -54,10 +55,17 @@ def run_generator(file_name):
         "job loss",
     ]
 
-    for label in ["suicide"] * 100 + ["non-suicide"] * 100:
+    labels = ["suicide"] * 100 + ["non-suicide"] * 100
+
+    for i, label in enumerate(tqdm(labels, desc="Generating data")):
         hint = f"{random.choice(contexts)}, {random.choice(tones)}"
         result = generator_module(label=label, variation_hint=hint)
         synthetic_data.append({"text": result.post, "label": label})
+
+        if result.post:
+            synthetic_data.append({"text": result.post, "label": label})
+        else:
+            tqdm.write(f"Skipped empty output at step {i}, empty response")
 
     df = pd.DataFrame(synthetic_data)
     df.to_csv(file_name, sep="\t", index=False)
