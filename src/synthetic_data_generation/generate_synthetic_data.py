@@ -60,7 +60,6 @@ def run_generator(file_name):
     for i, label in enumerate(tqdm(labels, desc="Generating data")):
         hint = f"{random.choice(contexts)}, {random.choice(tones)}"
         result = generator_module(label=label, variation_hint=hint)
-        synthetic_data.append({"text": result.post, "label": label})
 
         if result.post:
             synthetic_data.append({"text": result.post, "label": label})
@@ -68,6 +67,7 @@ def run_generator(file_name):
             tqdm.write(f"Skipped empty output at step {i}, empty response")
 
     df = pd.DataFrame(synthetic_data)
+    df = df.drop_duplicates()
     df.to_csv(file_name, sep="\t", index=False)
 
 

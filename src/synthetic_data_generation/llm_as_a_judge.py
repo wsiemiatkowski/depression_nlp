@@ -1,7 +1,7 @@
 import dspy
 import pandas as pd
 
-judge_lm = dspy.LM("ollama_chat/gemma3:27b", api_base="http://localhost:11434")
+judge_lm = dspy.LM("ollama_chat/deepseek-r1:32b", api_base="http://localhost:11434")
 dspy.configure(lm=judge_lm)
 
 
@@ -33,6 +33,7 @@ def run_judge(input_path: str, output_path: str, quality_threshold: float = 0.7)
     results = []
     for _, row in df.iterrows():
         verdict = judge(post=row["text"], label=row["label"])
+        print(verdict)
         results.append(
             {
                 "text": row["text"],
@@ -41,9 +42,6 @@ def run_judge(input_path: str, output_path: str, quality_threshold: float = 0.7)
                 "quality_score": verdict.quality_score,
                 "reasoning": verdict.reasoning,
             }
-        )
-        print(
-            f"[{row['label']}] valid={verdict.is_valid} score={verdict.quality_score:.2f}"
         )
 
     results_df = pd.DataFrame(results)
