@@ -33,7 +33,6 @@ def run_judge(input_path: str, output_path: str, quality_threshold: float = 0.7)
     results = []
     for _, row in df.iterrows():
         verdict = judge(post=row["text"], label=row["label"])
-        print(verdict)
         results.append(
             {
                 "text": row["text"],
