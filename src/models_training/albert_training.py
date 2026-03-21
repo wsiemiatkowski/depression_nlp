@@ -39,19 +39,13 @@ def tokenize_data(queries, labels):
 
 
 # Paths to files
-dataset_file = "data/01_raw/Suicide_Detection.csv"
-intermediate_file = "data/02_intermediate/albert/Suicide_detection_intermediate.csv"
+dataset = "data/02_training_data/depression_nlp.tsv"
 metrics_directory = "data/03_metrics/albert"
 metrics_file = f"{metrics_directory}/metrics.txt"
 confusion_matrix_file = f"{metrics_directory}/confusion_matrix.png"
 
 # Create dataframe for training
-main_df = pd.read_csv(dataset_file)
-depression_df = main_df.sample(6000)
-
-# Save unused rows to an intermediate file for future inferencing
-non_overlapping_df = main_df[~main_df.isin(depression_df).all(axis=1)]
-non_overlapping_df.to_csv(intermediate_file)
+depression_df = pd.read_csv(dataset, sep="\t", index=False)
 
 # Detect device for full M1 Mac support - mostly needed for inferencing and metrics
 device = (
