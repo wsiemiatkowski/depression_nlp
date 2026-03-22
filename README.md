@@ -1,2 +1,7 @@
 # depression_nlp
 Praca magisterska - skrypty
+Model          Original (MB)    ONNX (MB)    Reduction
+-------------------------------------------------------
+albert                  46.4          1.8        96.1%
+tinybert                55.4          0.6        99.0%
+mobilebert              94.6          6.5        93.1%
