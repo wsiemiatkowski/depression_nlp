@@ -15,12 +15,14 @@ DATASET_PATH = "data/02_training_data/depression_nlp.tsv"
 
 
 def get_device():
+    """Ensure proper device handling on all platforms"""
     if torch.backends.mps.is_available():
         return torch.device("mps")
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def load_and_prepare_data(label_encoder_path):
+    """Load and prepare data"""
     depression_df = pd.read_csv(DATASET_PATH, sep="\t")
 
     label_encoder = LabelEncoder()
@@ -42,6 +44,7 @@ def load_and_prepare_data(label_encoder_path):
 
 
 def tokenize_dataset(tokenizer, queries, labels):
+    """Tokenize the dataset"""
     tokenized = tokenizer(
         queries.tolist(),
         padding=True,
@@ -55,6 +58,7 @@ def tokenize_dataset(tokenizer, queries, labels):
 def save_metrics(
     metrics_dir, decoded_true_labels, decoded_predictions, label_encoder, model_name
 ):
+    """Creates and saves metrics data"""
     os.makedirs(metrics_dir, exist_ok=True)
 
     report = classification_report(

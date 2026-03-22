@@ -12,6 +12,7 @@ MAX_LENGTH = 128
 
 
 def convert_to_onnx(model_name: str, model_path: str, output_dir: str):
+    """Convert model to onnx"""
     print(f"Converting {model_name}...")
 
     tokenizer = AutoTokenizer.from_pretrained(model_path)

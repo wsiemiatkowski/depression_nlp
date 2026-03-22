@@ -13,7 +13,7 @@ null_text = df["text"].isnull().any()
 print(f"Null classes:\n{null_classes}")
 print(f"Null text:\n{null_text}")
 
-# Create sub dataset with 6000 examples
+# Create sub dataset with 15000 examples
 suicide = df[df["class"] == "suicide"].sample(n=7500, random_state=42)
 non_suicide = df[df["class"] == "non-suicide"].sample(n=7500, random_state=42)
 

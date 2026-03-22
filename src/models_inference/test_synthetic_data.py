@@ -51,6 +51,7 @@ class TextDataset(Dataset):
 
 
 def predict(model, dataloader):
+    """Returns model predictions"""
     model.eval()
     all_preds = []
     with torch.no_grad():
@@ -63,6 +64,7 @@ def predict(model, dataloader):
 
 
 def plot_confusion_matrix(conf_matrix, labels, model_name, output_path):
+    """Plot confusion matrix"""
     conf_matrix_df = pd.DataFrame(conf_matrix, index=labels, columns=labels)
     plt.figure(figsize=(8, 6))
     sns.heatmap(
@@ -83,6 +85,7 @@ def plot_confusion_matrix(conf_matrix, labels, model_name, output_path):
 
 
 def evaluate_model(model_name, model_path, pkl_path, texts, true_labels):
+    """Evaluate model on synthetic dataset"""
     print(f"\nEvaluating {model_name}...")
 
     # Load label encoder

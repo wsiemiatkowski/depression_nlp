@@ -35,6 +35,7 @@ class DataGenerator(dspy.Module):
 
 
 def run_generator(file_name):
+    """Generate synthetic data for NLP research on mental health detection."""
     generator_module = DataGenerator()
     synthetic_data = []
 

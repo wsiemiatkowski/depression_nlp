@@ -23,9 +23,11 @@ X_train, X_test, y_train, y_test, label_encoder = load_and_prepare_data(
     label_encoder_path=f"{MODEL_DIR}/label_encoder.pkl",
 )
 
+# Load model and tokenizer
 tokenizer = AlbertTokenizer.from_pretrained(MODEL_NAME)
 model = AlbertForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
 
+# Prepare dataset and trainer
 train_dataset = tokenize_dataset(tokenizer, X_train, y_train)
 test_dataset = tokenize_dataset(tokenizer, X_test, y_test)
 
@@ -53,6 +55,7 @@ trainer = Trainer(
 
 trainer.train()
 
+# Save model and evaluate results
 model.save_pretrained(f"{MODEL_DIR}/fine_tuned_albert")
 tokenizer.save_pretrained(f"{MODEL_DIR}/fine_tuned_albert")
 

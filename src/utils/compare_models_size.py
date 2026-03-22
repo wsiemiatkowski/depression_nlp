@@ -23,6 +23,7 @@ def get_dir_size(path: str) -> int:
 
 
 def bytes_to_mb(size: int) -> float:
+    """Convert bytes to MB"""
     return size / (1024 * 1024)
 
 

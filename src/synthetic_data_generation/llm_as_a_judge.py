@@ -27,6 +27,7 @@ class LLMJudge(dspy.Module):
 
 
 def run_judge(input_path: str, output_path: str, quality_threshold: float = 0.8):
+    """Judge synthetic data"""
     df = pd.read_csv(input_path, sep="\t")
     judge = LLMJudge()
 
