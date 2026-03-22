@@ -30,11 +30,22 @@ def bytes_to_mb(size: int) -> float:
 print(f"{'Model':<12} {'Original (MB)':>15} {'ONNX (MB)':>12} {'Reduction':>12}")
 print("-" * 55)
 
+output_lines = []
+output_lines.append(
+    f"{'Model':<12} {'Original (MB)':>15} {'ONNX (MB)':>12} {'Reduction':>12}"
+)
+output_lines.append("-" * 55)
+
 for model_name, (original_path, onnx_path) in models.items():
     original_size = get_dir_size(original_path)
     onnx_size = os.path.getsize(onnx_path)
     reduction = (1 - onnx_size / original_size) * 100
-
-    print(
+    output_lines.append(
         f"{model_name:<12} {bytes_to_mb(original_size):>15.1f} {bytes_to_mb(onnx_size):>12.1f} {reduction:>11.1f}%"
     )
+
+output = "\n".join(output_lines)
+print(output)
+
+with open("mobile_models/model_size_comparison.txt", "w") as f:
+    f.write(output)
