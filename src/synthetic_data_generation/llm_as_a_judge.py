@@ -1,7 +1,7 @@
 import dspy
 import pandas as pd
 
-judge_lm = dspy.LM("ollama_chat/deepseek-r1:32b", api_base="http://localhost:11434")
+judge_lm = dspy.LM("ollama_chat/gpt-oss:20b", api_base="http://localhost:11434")
 dspy.configure(lm=judge_lm)
 
 
